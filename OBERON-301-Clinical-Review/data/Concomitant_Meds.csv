@@ -1,0 +1,192 @@
+Subject_ID,Med_Name,Indication,Start_Date,End_Date,Ongoing_YN
+OB1111,Melatonin 3mg,Insomnia,7/30/2019,6/14/2020,No
+OB1111,Sodium Bicarbonate 500mg,CKD,1/14/2021,,Yes
+OB1112,Orlistat 120mg,Obesity,4/24/2020,11/15/2020,No
+OB1112,Formoterol Inhaler,COPD,7/23/2021,,Yes
+OB1113,Orlistat 120mg,Obesity,3/28/2014,,Yes
+OB1113,Atorvastatin 10mg,Dyslipidemia,3/24/2022,,Yes
+OB1113,Pantoprazole 40mg,GERD,2/6/2019,,Yes
+OB1113,Tiotropium Inhaler,COPD,2/10/2017,11/19/2017,No
+OB1113,Folic Acid 5mg,Supplement,10/18/2024,,Yes
+OB1113,Vitamin B12,Supplement,2/28/2025,12/14/2025,No
+OB1115,Escitalopram 10mg,Anxiety,5/13/2014,,Yes
+OB1115,Calcium + Vitamin D3,Bone Health,1/2/2025,3/20/2025,No
+OB1116,Telmisartan 40mg,Hypertension,3/8/2016,,Yes
+OB1116,Salbutamol Inhaler,Asthma,6/18/2018,,Yes
+OB1117,Sertraline 50mg,Depression,10/6/2016,5/13/2017,No
+OB1117,Allopurinol 100mg,Gout,4/5/2015,,Yes
+OB1117,Sumatriptan 50mg,Migraine,1/20/2017,,Yes
+OB1118,Amlodipine 5mg,Hypertension,7/21/2017,,Yes
+OB1118,Levothyroxine 50mcg,Hypothyroidism,11/18/2021,,Yes
+OB1118,Orlistat 120mg,Obesity,12/28/2022,,Yes
+OB1119,Sodium Bicarbonate 500mg,CKD,6/30/2016,,Yes
+OB1119,Orlistat 120mg,Obesity,7/17/2022,,Yes
+OB1119,Calcium + Vitamin D3,Bone Health,11/29/2024,5/2/2025,No
+OB1119,Ranitidine 150mg,Acidity,1/9/2025,1/25/2025,No
+OB1120,Pregabalin 75mg,Peripheral Neuropathy,2/5/2022,,Yes
+OB1120,Tamsulosin 0.4mg,BPH,5/7/2016,,Yes
+OB1120,Allopurinol 100mg,Gout,10/5/2017,9/9/2018,No
+OB1120,Escitalopram 10mg,Anxiety,9/6/2017,,Yes
+OB1120,Omega-3 Fish Oil,Supplement,3/1/2025,12/1/2025,No
+OB1122,Tamsulosin 0.4mg,BPH,4/21/2015,,Yes
+OB1122,Melatonin 3mg,Insomnia,7/9/2019,4/28/2020,No
+OB1122,Buspirone 10mg,Anxiety,12/9/2019,,Yes
+OB1122,Folic Acid 5mg,Supplement,8/15/2024,,Yes
+OB1122,Ranitidine 150mg,Acidity,10/20/2024,10/18/2025,No
+OB1125,Ferrous Sulfate 325mg,Iron Deficiency Anemia,3/8/2021,4/14/2021,No
+OB1125,Orlistat 120mg,Obesity,3/25/2015,,Yes
+OB1125,Omega-3 Fish Oil,Supplement,11/12/2024,,Yes
+OB1125,Ibuprofen 200mg,Pain Relief,2/3/2025,8/13/2025,No
+OB1126,Calcium + Vitamin D3,Bone Health,3/25/2025,4/25/2025,No
+OB1128,Tamsulosin 0.4mg,BPH,2/1/2018,,Yes
+OB1128,Zolpidem 5mg,Insomnia,6/4/2019,4/30/2020,No
+OB1128,Cholecalciferol 60000 IU,Vitamin D Deficiency,7/2/2021,8/22/2021,No
+OB1129,Formoterol Inhaler,COPD,10/21/2016,,Yes
+OB1129,Calcium 500mg,Supplement,2/16/2025,8/8/2025,No
+OB1129,Omega-3 Fish Oil,Supplement,12/2/2024,,Yes
+OB1129,Metformin 500mg,Type 2 Diabetes,4/13/2016,,Yes
+OB1132,Losartan 50mg,Hypertension,5/11/2020,,Yes
+OB1132,Calcium 500mg,Supplement,3/5/2025,2/17/2026,No
+OB1133,Colchicine 0.5mg,Gout,5/13/2018,,Yes
+OB1133,Apixaban 5mg,Atrial Fibrillation,7/26/2019,12/29/2019,No
+OB1133,Escitalopram 10mg,Anxiety,8/12/2019,,Yes
+OB1133,Salbutamol Inhaler,Asthma,8/18/2022,,Yes
+OB1134,Epoetin Alfa,CKD-related Anemia,7/11/2016,,Yes
+OB1134,Zolpidem 5mg,Insomnia,10/1/2016,4/23/2017,No
+OB1134,Fexofenadine 120mg,Allergic Rhinitis,7/5/2017,,Yes
+OB1134,Buspirone 10mg,Anxiety,4/1/2020,9/11/2020,No
+OB1134,Ranitidine 150mg,Acidity,12/25/2024,8/15/2025,No
+OB1134,Calcium 500mg,Supplement,4/6/2025,2/2/2026,No
+OB1136,Rosuvastatin 10mg,Hyperlipidemia,2/8/2015,,Yes
+OB1136,Ibuprofen 200mg,Pain Relief,11/10/2024,,Yes
+OB1140,Levothyroxine 50mcg,Hypothyroidism,1/2/2019,12/14/2019,No
+OB1140,Gabapentin 300mg,Neuropathic Pain,12/10/2019,,Yes
+OB1140,Ibuprofen 200mg,Pain Relief,12/7/2024,8/13/2025,No
+OB1140,Cetirizine 10mg,Allergies,1/17/2025,,Yes
+OB1142,Ferrous Sulfate 325mg,Anemia,6/24/2014,8/16/2014,No
+OB1142,Ferrous Sulfate 325mg,Iron Deficiency Anemia,12/27/2023,,Yes
+OB1142,Calcium 500mg,Supplement,11/29/2024,7/1/2025,No
+OB1143,Atorvastatin 20mg,Hyperlipidemia,1/20/2015,,Yes
+OB1143,Cholecalciferol 60000 IU,Vitamin D Deficiency,12/26/2015,,Yes
+OB1143,Sitagliptin 100mg,Type 2 Diabetes,3/17/2020,,Yes
+OB1144,Atorvastatin 20mg,Hyperlipidemia,9/18/2016,,Yes
+OB1144,Vitamin B12,Supplement,11/22/2024,6/13/2025,No
+OB1146,Hydroxychloroquine 200mg,Rheumatoid Arthritis,10/29/2016,,Yes
+OB1146,Allopurinol 100mg,Gout,9/19/2015,,Yes
+OB1147,Melatonin 3mg,Insomnia,1/28/2024,,Yes
+OB1147,Montelukast 10mg,Asthma,10/17/2015,,Yes
+OB1148,Sertraline 50mg,Depression,7/19/2014,,Yes
+OB1148,Atorvastatin 20mg,Hyperlipidemia,10/18/2020,,Yes
+OB1148,Vitamin D3 1000 IU,Vitamin D Deficiency,4/26/2022,,Yes
+OB1149,Gabapentin 300mg,Neuropathic Pain,1/15/2022,,Yes
+OB1149,Melatonin 3mg,Insomnia,3/25/2024,,Yes
+OB1149,Ranitidine 150mg,Acidity,1/22/2025,10/7/2025,No
+OB1150,Hydroxychloroquine 200mg,Rheumatoid Arthritis,10/1/2021,,Yes
+OB1150,Hydrocortisone Cream 1%,Eczema,2/13/2022,,Yes
+OB1150,Atorvastatin 10mg,Dyslipidemia,11/23/2015,,Yes
+OB1150,Vitamin B12,Supplement,6/1/2025,5/29/2026,No
+OB1150,Multivitamin,General Health,1/10/2025,10/11/2025,No
+OB1151,Warfarin 5mg,Atrial Fibrillation,11/23/2016,,Yes
+OB1151,Ibuprofen 200mg,Pain Relief,3/20/2025,2/22/2026,No
+OB1152,Metoprolol 25mg,CAD,4/3/2017,,Yes
+OB1152,Losartan 50mg,Hypertension,12/21/2017,,Yes
+OB1152,Multivitamin,General Health,11/14/2024,5/13/2025,No
+OB1152,Calcium + Vitamin D3,Bone Health,4/19/2025,3/16/2026,No
+OB1153,Levothyroxine 50mcg,Hypothyroidism,5/23/2015,,Yes
+OB1153,Sitagliptin 100mg,Type 2 Diabetes,8/14/2019,,Yes
+OB1153,Sodium Bicarbonate 500mg,CKD,5/3/2019,,Yes
+OB1153,Sertraline 50mg,Depression,12/31/2015,,Yes
+OB1154,Pregabalin 75mg,Peripheral Neuropathy,3/10/2017,,Yes
+OB1154,Ranitidine 150mg,Acidity,9/13/2024,,Yes
+OB1154,Calcium + Vitamin D3,Bone Health,9/16/2024,4/12/2025,No
+OB1155,Sumatriptan 50mg,Migraine,7/5/2015,,Yes
+OB1155,Metoprolol 25mg,CAD,1/27/2022,9/22/2022,No
+OB1155,Calcium + Vitamin D3,Bone Health,4/18/2025,,Yes
+OB1156,Methotrexate 7.5mg,Rheumatoid Arthritis,8/23/2023,3/25/2024,No
+OB1156,Glimepiride 2mg,Type 2 Diabetes,11/11/2017,,Yes
+OB1156,Apixaban 5mg,Atrial Fibrillation,1/18/2024,,Yes
+OB1156,Diclofenac 50mg,Osteoarthritis,6/23/2023,,Yes
+OB1156,Acetaminophen 500mg,Pain Relief,10/14/2024,3/19/2025,No
+OB1156,Vitamin B12,Supplement,10/14/2024,5/31/2025,No
+OB1157,Formoterol Inhaler,COPD,11/2/2023,,Yes
+OB1157,Cetirizine 10mg,Allergic Rhinitis,10/7/2019,,Yes
+OB1157,Omeprazole 20mg,GERD,5/22/2020,2/7/2021,No
+OB1157,Ibuprofen 200mg,Pain Relief,2/13/2025,2/8/2026,No
+OB1157,Calcium + Vitamin D3,Bone Health,5/13/2025,12/3/2025,No
+OB1157,Sumatriptan 50mg,Migraine,5/6/2025,4/19/2026,No
+OB1158,Telmisartan 40mg,Hypertension,1/17/2015,,Yes
+OB1159,Multivitamin,General Health,1/22/2025,10/4/2025,No
+OB1160,Apixaban 5mg,Atrial Fibrillation,1/13/2020,,Yes
+OB1160,Buspirone 10mg,Anxiety,5/27/2018,,Yes
+OB1160,Aspirin 81mg,CAD Prophylaxis,7/27/2015,2/24/2016,No
+OB1160,Sumatriptan 50mg,Migraine,3/23/2015,,Yes
+OB1160,Folic Acid 5mg,Supplement,3/11/2025,1/7/2026,No
+OB1161,Tiotropium Inhaler,COPD,11/29/2016,,Yes
+OB1161,Tamsulosin 0.4mg,BPH,12/10/2018,,Yes
+OB1162,Losartan 50mg,Hypertension,12/3/2023,,Yes
+OB1162,Cholecalciferol 60000 IU,Vitamin D Deficiency,8/13/2017,11/23/2017,No
+OB1162,Rifaximin 550mg,Hepatic Encephalopathy,4/29/2023,,Yes
+OB1162,Calcium + Vitamin D3,Bone Health,3/25/2025,12/14/2025,No
+OB1165,Escitalopram 10mg,Depression,8/11/2021,,Yes
+OB1165,Warfarin 5mg,Atrial Fibrillation,6/18/2021,,Yes
+OB1165,Folic Acid 5mg,Supplement,12/2/2024,,Yes
+OB1165,Omega-3 Fish Oil,Supplement,3/20/2025,,Yes
+OB1166,Metformin 500mg,Type 2 Diabetes,5/30/2016,,Yes
+OB1166,Vitamin D3 1000 IU,Vitamin D Deficiency,8/21/2014,,Yes
+OB1166,Folic Acid 5mg,Supplement,10/6/2024,,Yes
+OB1168,Orlistat 120mg,Obesity,4/15/2015,,Yes
+OB1168,Methotrexate 7.5mg,Rheumatoid Arthritis,12/26/2022,,Yes
+OB1168,Pregabalin 75mg,Peripheral Neuropathy,12/26/2014,,Yes
+OB1168,Ranitidine 150mg,Acidity,12/8/2024,5/26/2025,No
+OB1168,Multivitamin,General Health,11/10/2024,10/19/2025,No
+OB1169,Escitalopram 10mg,Depression,3/17/2024,,Yes
+OB1169,Atorvastatin 20mg,Hyperlipidemia,2/14/2018,,Yes
+OB1169,Calcium 500mg,Supplement,11/30/2024,4/9/2025,No
+OB1170,Gabapentin 300mg,Neuropathic Pain,1/28/2022,,Yes
+OB1170,Melatonin 3mg,Insomnia,4/28/2015,,Yes
+OB1170,Escitalopram 10mg,Anxiety,1/16/2023,5/4/2023,No
+OB1170,Atorvastatin 20mg,Hyperlipidemia,10/21/2021,3/29/2022,No
+OB1171,Salbutamol Inhaler,Asthma,4/9/2022,2/11/2023,No
+OB1171,Acetaminophen 500mg,Joint Pain,6/15/2014,,Yes
+OB1172,Amoxicillin 500mg,Infection,1/28/2025,2/26/2025,No
+OB1172,Salbutamol Inhaler,Asthma,3/17/2015,,Yes
+OB1172,Calcium 500mg,Supplement,2/2/2025,3/2/2025,No
+OB1173,Glimepiride 2mg,Type 2 Diabetes,3/4/2017,,Yes
+OB1175,Budesonide Inhaler,Asthma,6/18/2019,,Yes
+OB1176,Diclofenac 50mg,Osteoarthritis,12/13/2022,,Yes
+OB1176,Telmisartan 40mg,Hypertension,12/31/2016,6/25/2017,No
+OB1176,Folic Acid 5mg,Supplement,2/13/2025,,Yes
+OB1177,Orlistat 120mg,Obesity,1/4/2016,,Yes
+OB1177,Rosuvastatin 10mg,Hyperlipidemia,10/29/2014,10/2/2015,No
+OB1177,Folic Acid 5mg,Supplement,11/4/2024,4/25/2025,No
+OB1177,Calcium + Vitamin D3,Bone Health,12/1/2024,,Yes
+OB1178,Finasteride 5mg,BPH,12/27/2017,,Yes
+OB1178,Glimepiride 2mg,Type 2 Diabetes,7/11/2017,,Yes
+OB1178,Levothyroxine 50mcg,Hypothyroidism,3/13/2015,,Yes
+OB1178,Ibuprofen 200mg,Pain Relief,10/28/2024,,Yes
+OB1178,Folic Acid 5mg,Supplement,6/1/2025,,Yes
+OB1180,Vitamin B12,Supplement,4/5/2025,10/27/2025,No
+OB1182,Lisinopril 10mg,Hypertension,10/30/2014,,Yes
+OB1182,Apixaban 5mg,Atrial Fibrillation,7/12/2016,,Yes
+OB1182,Epoetin Alfa,CKD-related Anemia,12/8/2019,,Yes
+OB1183,Formoterol Inhaler,COPD,7/28/2020,7/23/2021,No
+OB1184,Formoterol Inhaler,COPD,8/24/2023,,Yes
+OB1185,Sodium Bicarbonate 500mg,CKD,1/29/2019,,Yes
+OB1185,Ferrous Sulfate 325mg,Anemia,9/16/2018,12/4/2018,No
+OB1185,Calcium + Vitamin D3,Bone Health,3/5/2025,8/23/2025,No
+OB1185,Ibuprofen 200mg,Pain Relief,4/5/2025,4/23/2025,No
+OB1186,Levothyroxine 75mcg,Hypothyroidism,7/3/2019,,Yes
+OB1186,Omeprazole 20mg,GERD,4/9/2015,,Yes
+OB1188,Aspirin 81mg,CAD Prophylaxis,2/19/2023,,Yes
+OB1188,Sertraline 50mg,Depression,6/29/2016,,Yes
+OB1189,Rosuvastatin 10mg,Hyperlipidemia,9/29/2020,,Yes
+OB1189,Formoterol Inhaler,COPD,3/27/2020,,Yes
+OB1189,Melatonin 3mg,Insomnia,4/10/2021,,Yes
+OB1189,Calcium + Vitamin D3,Bone Health,3/9/2025,2/25/2026,No
+OB1193,Epoetin Alfa,CKD-related Anemia,2/25/2015,1/6/2016,No
+OB1196,Hydroxychloroquine 200mg,Rheumatoid Arthritis,12/27/2019,4/6/2020,No
+OB1199,Escitalopram 10mg,Anxiety,9/3/2018,,Yes
+OB1199,Atorvastatin 20mg,Hyperlipidemia,6/6/2020,,Yes
+OB1199,Orlistat 120mg,Obesity,2/19/2021,,Yes
+OB1199,Multivitamin,General Health,5/22/2025,,Yes
+OB1199,Ibuprofen 200mg,Pain Relief,2/20/2025,5/24/2025,No

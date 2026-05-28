@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBERON-301 Cross-Form Clinical Data Review</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        /* Inline fallback so page is never blank */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: #f8f9fa; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <header style="background:#1e293b;color:white;padding:1rem 2rem;display:flex;align-items:center;gap:2rem;">
+        <h1 style="font-size:1.25rem;margin:0;">OBERON-301</h1>
+        <p style="font-size:0.85rem;color:#94a3b8;margin:0;">Cross-Form Clinical Data Review Assistant</p>
+        <nav id="nav" class="hidden" style="margin-left:auto;display:flex;gap:0.25rem;">
+            <button onclick="showPage('upload')" data-page="upload" style="background:transparent;color:#94a3b8;border:none;padding:0.5rem 1rem;cursor:pointer;border-radius:6px;">Upload</button>
+            <button onclick="showPage('summary')" data-page="summary" style="background:transparent;color:#94a3b8;border:none;padding:0.5rem 1rem;cursor:pointer;border-radius:6px;">Summary</button>
+            <button onclick="showPage('flags')" data-page="flags" style="background:transparent;color:#94a3b8;border:none;padding:0.5rem 1rem;cursor:pointer;border-radius:6px;">Flags</button>
+        </nav>
+    </header>
+
+    <main style="max-width:1200px;margin:2rem auto;padding:0 1rem;">
+        <!-- Page 1: Upload -->
+        <div id="page-upload" class="page active">
+            <div style="background:white;border-radius:12px;padding:2rem;max-width:600px;margin:0 auto;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+                <h2>Upload Clinical Trial Data</h2>
+                <p style="color:#6c757d;margin-bottom:1.5rem;">Upload all 7 CSV files from the OBERON-301 trial.</p>
+
+                <div id="file-drop" style="border:2px dashed #dee2e6;border-radius:8px;padding:2rem;text-align:center;position:relative;">
+                    <input type="file" id="file-input" multiple accept=".csv"
+                           style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;"
+                           onchange="handleFiles(this.files)">
+                    <p style="margin:0;">Drag &amp; drop CSV files here or <label for="file-input" style="color:#2563eb;cursor:pointer;text-decoration:underline;">browse</label></p>
+                </div>
+
+                <div id="file-list" style="margin:1rem 0;font-size:0.85rem;"></div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;gap:1rem;">
+                    <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+                        <label for="llm-provider">LLM Provider:</label>
+                        <select id="llm-provider" style="padding:0.4rem;border:1px solid #dee2e6;border-radius:6px;">
+                            <option value="skip">Rules Only (no LLM)</option>
+                            <option value="claude">Claude</option>
+                            <option value="openai">OpenAI</option>
+                        </select>
+                    </div>
+                    <button id="btn-analyze" onclick="runAnalysis()" disabled
+                            style="background:#2563eb;color:white;border:none;padding:0.6rem 1.5rem;border-radius:8px;font-size:0.95rem;cursor:pointer;font-weight:600;opacity:0.5;">
+                        Run Analysis
+                    </button>
+                </div>
+
+                <div id="progress-bar" class="hidden" style="margin-top:1.5rem;">
+                    <div style="height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden;">
+                        <div id="progress-fill" style="height:100%;background:#2563eb;width:0%;transition:width 0.3s;"></div>
+                    </div>
+                    <p id="progress-text" style="font-size:0.85rem;color:#6c757d;margin-top:0.5rem;">Starting analysis...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Summary Dashboard -->
+        <div id="page-summary" class="page">
+            <div class="summary-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem;">
+                <div class="stat-card total" style="background:white;border-radius:10px;padding:1.25rem;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.1);border-top:3px solid #2563eb;">
+                    <span id="stat-subjects" style="display:block;font-size:2rem;font-weight:700;">0</span>
+                    <span style="font-size:0.8rem;color:#6c757d;">Subjects Analyzed</span>
+                </div>
+                <div class="stat-card" style="background:white;border-radius:10px;padding:1.25rem;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.1);border-top:3px solid #2563eb;">
+                    <span id="stat-flags" style="display:block;font-size:2rem;font-weight:700;">0</span>
+                    <span style="font-size:0.8rem;color:#6c757d;">Total Issues Found</span>
+                </div>
+                <div style="background:white;border-radius:10px;padding:1.25rem;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.1);border-top:3px solid #dc3545;">
+                    <span id="stat-critical" style="display:block;font-size:2rem;font-weight:700;color:#dc3545;">0</span>
+                    <span style="font-size:0.8rem;color:#6c757d;">Critical</span>
+                </div>
+                <div style="background:white;border-radius:10px;padding:1.25rem;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.1);border-top:3px solid #fd7e14;">
+                    <span id="stat-major" style="display:block;font-size:2rem;font-weight:700;color:#fd7e14;">0</span>
+                    <span style="font-size:0.8rem;color:#6c757d;">Major</span>
+                </div>
+                <div style="background:white;border-radius:10px;padding:1.25rem;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.1);border-top:3px solid #28a745;">
+                    <span id="stat-minor" style="display:block;font-size:2rem;font-weight:700;color:#28a745;">0</span>
+                    <span style="font-size:0.8rem;color:#6c757d;">Minor</span>
+                </div>
+                <div style="background:white;border-radius:10px;padding:1.25rem;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.1);border-top:3px solid #8b5cf6;">
+                    <span id="stat-time-saved" style="display:block;font-size:2rem;font-weight:700;">0</span>
+                    <span style="font-size:0.8rem;color:#6c757d;">Est. Hours Saved</span>
+                </div>
+            </div>
+            <div style="background:white;border-radius:10px;padding:1.25rem;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+                <div style="display:flex;align-items:center;gap:0.75rem;padding:0.4rem 0;">
+                    <span style="background:#6366f1;color:white;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.75rem;font-weight:600;">Rule-Based</span>
+                    <span id="stat-rule-flags">0</span> flags
+                </div>
+                <div style="display:flex;align-items:center;gap:0.75rem;padding:0.4rem 0;">
+                    <span style="background:#10b981;color:white;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.75rem;font-weight:600;">AI-Detected</span>
+                    <span id="stat-ai-flags">0</span> flags
+                </div>
+                <div id="llm-info-row" style="display:none;align-items:center;gap:0.75rem;padding:0.4rem 0;">
+                    <span style="background:#8b5cf6;color:white;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.75rem;font-weight:600;">LLM</span>
+                    <span id="stat-llm-info"></span>
+                </div>
+                <div style="display:flex;align-items:center;gap:0.75rem;padding:0.4rem 0;">
+                    <span>Processing Time:</span>
+                    <span id="stat-processing-time">0</span>s
+                </div>
+            </div>
+            <button onclick="showPage('flags')" style="background:#2563eb;color:white;border:none;padding:0.6rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;">View Detailed Flags</button>
+        </div>
+
+        <!-- Page 3: Detailed Flags Table -->
+        <div id="page-flags" class="page">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                    <select id="filter-severity" onchange="applyFilters()" style="padding:0.4rem;border:1px solid #dee2e6;border-radius:6px;font-size:0.85rem;">
+                        <option value="">All Severities</option>
+                        <option value="Critical">Critical</option>
+                        <option value="Major">Major</option>
+                        <option value="Minor">Minor</option>
+                    </select>
+                    <select id="filter-source" onchange="applyFilters()" style="padding:0.4rem;border:1px solid #dee2e6;border-radius:6px;font-size:0.85rem;">
+                        <option value="">All Sources</option>
+                        <option value="Rule">Rule-Based</option>
+                        <option value="AI">AI-Detected</option>
+                    </select>
+                    <input type="text" id="filter-search" placeholder="Search subject or description..." oninput="applyFilters()" style="padding:0.4rem;border:1px solid #dee2e6;border-radius:6px;font-size:0.85rem;width:240px;">
+                </div>
+                <div style="display:flex;align-items:center;gap:1rem;">
+                    <span id="flags-count" style="font-size:0.85rem;color:#6c757d;"></span>
+                    <button onclick="exportCSV()" style="background:#1e293b;color:white;border:none;padding:0.4rem 1rem;border-radius:6px;cursor:pointer;font-size:0.85rem;">Export CSV</button>
+                </div>
+            </div>
+            <table id="flags-table" style="width:100%;border-collapse:collapse;background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+                <thead>
+                    <tr style="background:#f1f5f9;">
+                        <th onclick="sortTable('subject_id')" style="padding:0.7rem;text-align:left;font-size:0.8rem;color:#6c757d;cursor:pointer;">Subject</th>
+                        <th onclick="sortTable('forms_involved')" style="padding:0.7rem;text-align:left;font-size:0.8rem;color:#6c757d;cursor:pointer;">Forms</th>
+                        <th onclick="sortTable('description')" style="padding:0.7rem;text-align:left;font-size:0.8rem;color:#6c757d;cursor:pointer;">Issue</th>
+                        <th onclick="sortTable('severity')" style="padding:0.7rem;text-align:left;font-size:0.8rem;color:#6c757d;cursor:pointer;">Severity</th>
+                        <th onclick="sortTable('source')" style="padding:0.7rem;text-align:left;font-size:0.8rem;color:#6c757d;cursor:pointer;">Source</th>
+                        <th onclick="sortTable('rule_id')" style="padding:0.7rem;text-align:left;font-size:0.8rem;color:#6c757d;cursor:pointer;">Rule</th>
+                    </tr>
+                </thead>
+                <tbody id="flags-tbody"></tbody>
+            </table>
+        </div>
+
+        <!-- Page 4: Subject Detail -->
+        <div id="page-subject" class="page">
+            <button onclick="showPage('flags')" style="background:transparent;border:1px solid #dee2e6;padding:0.4rem 1rem;border-radius:6px;cursor:pointer;margin-bottom:1rem;">&larr; Back to Flags</button>
+            <div id="subject-header" style="background:white;border-radius:10px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);"></div>
+            <div id="subject-flags" style="background:white;border-radius:10px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);"></div>
+            <div id="subject-details"></div>
+        </div>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
