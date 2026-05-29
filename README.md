@@ -188,7 +188,7 @@ The tool was tested against a synthetic dataset with 26 deliberately planted cro
 
 ## About
 
-Built by **Naresh Parlapalli, CCDM®** — 17+ years in Clinical Data Management at J&J, Novartis, BMS, IQVIA, and Syneos Health. This tool was created to demonstrate how AI can augment (not replace) clinical data review workflows.
+Built by **Naresh Parlapalli, CCDM®** — 17+ years in Clinical Data Management at Accenture, Novartis, IQVIA,PPD, Syneos and Concert AI. This tool was created to demonstrate how AI can augment (not replace) clinical data review workflows.
 
 Contact: naresh.0705@gmail.com | +91 7829100707
 
