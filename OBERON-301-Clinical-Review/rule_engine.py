@@ -1,19 +1,54 @@
 import pandas as pd
 import numpy as np
+from datetime import datetime
 from models import Flag, SubjectProfile
 import config
 
 
+def _parse_date(dt):
+    """Convert string or Timestamp to datetime, returns None if invalid."""
+    if dt is None:
+        return None
+    try:
+        if pd.isna(dt):
+            return None
+    except (TypeError, ValueError):
+        pass
+    if isinstance(dt, datetime):
+        return dt
+    if isinstance(dt, pd.Timestamp):
+        return dt.to_pydatetime()
+    if isinstance(dt, str):
+        if not dt.strip():
+            return None
+        try:
+            return datetime.strptime(dt.strip(), "%m/%d/%Y")
+        except ValueError:
+            return None
+    return None
+
+
 def _fmt_date(dt) -> str:
-    if pd.isna(dt):
+    if dt is None:
         return "N/A"
-    return dt.strftime("%m/%d/%Y")
+    if isinstance(dt, str):
+        return dt if dt.strip() else "N/A"
+    try:
+        if pd.isna(dt):
+            return "N/A"
+    except (TypeError, ValueError):
+        pass
+    if isinstance(dt, (datetime, pd.Timestamp)):
+        return dt.strftime("%m/%d/%Y")
+    return str(dt)
 
 
 def _calculate_age(dob, reference_date) -> float | None:
-    if pd.isna(dob) or pd.isna(reference_date):
+    dob_dt = _parse_date(dob)
+    ref_dt = _parse_date(reference_date)
+    if dob_dt is None or ref_dt is None:
         return None
-    delta = reference_date - dob
+    delta = ref_dt - dob_dt
     return delta.days / 365.25
 
 
@@ -68,8 +103,10 @@ def check_date_rules(dataframes: dict[str, pd.DataFrame], profiles: dict[str, Su
 
     # RULE-DT-001: Informed Consent Date must be on or before Screening Date
     for _, row in dem.iterrows():
-        if pd.notna(row["Informed_Consent_Date"]) and pd.notna(row["Screening_Date"]):
-            if row["Informed_Consent_Date"] > row["Screening_Date"]:
+        _ict = _parse_date(row["Informed_Consent_Date"])
+        _scr = _parse_date(row["Screening_Date"])
+        if _ict is not None and _scr is not None:
+            if _ict > _scr:
                 flags.append(Flag(
                     flag_id=f"RULE-DT-001-{row['Subject_ID']}",
                     subject_id=row["Subject_ID"],
@@ -90,8 +127,10 @@ def check_date_rules(dataframes: dict[str, pd.DataFrame], profiles: dict[str, Su
             subj = _get_subject_dem(ae["Subject_ID"], dem)
             if subj is None:
                 continue
-            if pd.notna(ae["Start_Date"]) and pd.notna(subj["Informed_Consent_Date"]):
-                if ae["Start_Date"] < subj["Informed_Consent_Date"]:
+            _ae_start = _parse_date(ae["Start_Date"])
+            _ic = _parse_date(subj["Informed_Consent_Date"])
+            if _ae_start is not None and _ic is not None:
+                if _ae_start < _ic:
                     flags.append(Flag(
                         flag_id=f"RULE-DT-002-{ae['Subject_ID']}-{ae['AE_Term']}",
                         subject_id=ae["Subject_ID"],
@@ -112,8 +151,10 @@ def check_date_rules(dataframes: dict[str, pd.DataFrame], profiles: dict[str, Su
             subj = _get_subject_dem(med["Subject_ID"], dem)
             if subj is None:
                 continue
-            if pd.notna(med["Start_Date"]) and pd.notna(subj["Informed_Consent_Date"]):
-                if med["Start_Date"] < subj["Informed_Consent_Date"] and str(med.get("Ongoing_YN", "")).strip() == "No":
+            _med_start = _parse_date(med["Start_Date"])
+            _ic2 = _parse_date(subj["Informed_Consent_Date"])
+            if _med_start is not None and _ic2 is not None:
+                if _med_start < _ic2 and str(med.get("Ongoing_YN", "")).strip() == "No":
                     flags.append(Flag(
                         flag_id=f"RULE-DT-003-{med['Subject_ID']}-{med['Med_Name']}",
                         subject_id=med["Subject_ID"],
@@ -134,8 +175,10 @@ def check_date_rules(dataframes: dict[str, pd.DataFrame], profiles: dict[str, Su
             subj = _get_subject_dem(mh["Subject_ID"], dem)
             if subj is None:
                 continue
-            if pd.notna(mh["MH_Start_Date"]) and pd.notna(subj["Screening_Date"]):
-                if mh["MH_Start_Date"] > subj["Screening_Date"]:
+            _mh_start = _parse_date(mh["MH_Start_Date"])
+            _scr2 = _parse_date(subj["Screening_Date"])
+            if _mh_start is not None and _scr2 is not None:
+                if _mh_start > _scr2:
                     flags.append(Flag(
                         flag_id=f"RULE-DT-004-{mh['Subject_ID']}-{mh['MH_Term']}",
                         subject_id=mh["Subject_ID"],
@@ -314,8 +357,10 @@ def check_disposition_rules(dataframes: dict[str, pd.DataFrame], profiles: dict[
             subj = _get_subject_dem(disp["Subject_ID"], dem_df)
             if subj is None:
                 continue
-            if pd.notna(disp.get("Last_Visit_Date")) and pd.notna(subj.get("Screening_Date")):
-                actual_days = (disp["Last_Visit_Date"] - subj["Screening_Date"]).days
+            _lv = _parse_date(disp.get("Last_Visit_Date"))
+            _sc3 = _parse_date(subj.get("Screening_Date"))
+            if _lv is not None and _sc3 is not None:
+                actual_days = (_lv - _sc3).days
                 min_days = config.STUDY_DURATION_WEEKS * 7 * 0.5
                 if actual_days < min_days:
                     flags.append(Flag(

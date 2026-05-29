@@ -27,7 +27,8 @@ FILE_MAP = {
 def parse_dates(df: pd.DataFrame, date_columns: list[str]) -> pd.DataFrame:
     for col in date_columns:
         if col in df.columns:
-            df.loc[:, col] = pd.to_datetime(df[col], format="mixed", errors="coerce")
+            parsed = pd.to_datetime(df[col], format="mixed", errors="coerce")
+            df.loc[:, col] = parsed.dt.strftime("%m/%d/%Y").where(parsed.notna(), None)
     return df
 
 
@@ -63,10 +64,14 @@ def load_csvs_from_uploads(files: dict[str, bytes]) -> dict[str, pd.DataFrame]:
 def _row_to_dict(row) -> dict:
     d = {}
     for k, v in row.items():
-        if isinstance(v, pd.Timestamp):
-            d[k] = v.strftime("%m/%d/%Y") if pd.notna(v) else None
-        elif isinstance(v, float) and (np.isnan(v) or np.isinf(v)):
+        if v is pd.NaT or (isinstance(v, float) and (np.isnan(v) or np.isinf(v))):
             d[k] = None
+        elif isinstance(v, pd.Timestamp):
+            d[k] = v.strftime("%m/%d/%Y")
+        elif isinstance(v, (np.integer,)):
+            d[k] = int(v)
+        elif isinstance(v, (np.floating,)):
+            d[k] = float(v)
         else:
             d[k] = v
     return d
