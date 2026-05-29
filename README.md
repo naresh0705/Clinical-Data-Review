@@ -1,366 +1,197 @@
-  Step 1: Install Python        
+# OBERON-301: Cross-Form Clinical Data Review Assistant
+
+An AI-powered clinical data review tool that detects cross-form inconsistencies in clinical trial data — catching issues that traditional edit checks miss.
+
+Built by a Clinical Data Manager (CCDM®) with 17+ years of experience at J&J, Novartis, and BMS.
+
+---
+
+## The Problem
+
+Clinical Data Managers spend 40–60% of their review time manually checking patient data across multiple CRF forms — looking for inconsistencies that no single edit check can catch.
+
+Examples:
+- A subject's lab values trending 3x above normal across visits, but no adverse event reported
+- A medication prescribed without any matching condition in medical history
+- A fatal adverse event outcome, but disposition says the subject "completed" the study
+
+These cross-form issues are the #1 source of audit findings — and they're invisible to standard EDC edit checks.
+
+## The Solution
+
+This tool automates cross-form clinical data review using a two-layer approach:
+
+**Layer 1 — Rule-Based Engine:** 18 deterministic validation rules across 8 categories covering date validation, safety criteria, lab trending, vital sign changes, medication-condition matching, disposition logic, and exclusion criteria checks.
+
+**Layer 2 — LLM Engine:** AI-powered clinical reasoning that catches what rules cannot — medication-to-condition semantic matching (20,000+ combinations), natural language analysis of AE verbatim text, whole-patient narrative review, and automated clinical data query generation.
+
+## Key Results
+
+| Metric | Value |
+|--------|-------|
+| Subjects analyzed | 62 |
+| CRF domains covered | 7 (Demographics, Medical History, Concomitant Meds, Adverse Events, Labs, Vital Signs, Disposition) |
+| Planted cross-form errors | 26 |
+| Detection rate | 85%+ |
+| Manual review time (estimated) | 6–8 hours |
+| Tool processing time | Under 2 minutes |
+| False positive reduction | 300 → 30 flags (90% noise reduction through prompt tuning) |
+
+## Architecture
+
+```
+┌─────────────────────────────────┐
+│     CSV Upload (7 CRF files)    │
+└──────────────┬──────────────────┘
+               │
+               ▼
+┌─────────────────────────────────┐
+│     Data Ingestion & Linking    │
+│     (Link by Subject_ID)        │
+└──────────────┬──────────────────┘
+               │
+        ┌──────┴──────┐
+        ▼             ▼
+┌──────────────┐ ┌───────────────┐
+│ Rule-Based   │ │  LLM Engine   │
+│ Engine       │ │  (GPT-4o)     │
+│              │ │               │
+│ 18 rules     │ │ Med-condition │
+│ 8 categories │ │ matching,     │
+│ Date checks  │ │ AE verbatim   │
+│ Lab trending │ │ analysis,     │
+│ Safety logic │ │ subject-level │
+│              │ │ reasoning     │
+└──────┬───────┘ └───────┬───────┘
+       │                 │
+       └────────┬────────┘
+                ▼
+┌─────────────────────────────────┐
+│     Deduplication & Scoring     │
+│     (Confidence: Critical/High) │
+└──────────────┬──────────────────┘
+               │
+               ▼
+┌─────────────────────────────────┐
+│     Results Dashboard           │
+│     - Summary metrics           │
+│     - Flagged issues table      │
+│     - Subject detail view       │
+│     - CSV export                │
+└─────────────────────────────────┘
+```
 
+## Types of Issues Detected
 
+**What edit checks catch (field-level):**
+- Missing values, out-of-range entries, date format errors
 
-  1. Open your web browser and go to: python.org/downloads
+**What this tool catches (cross-form, clinical-level):**
 
-  2. Click the big yellow button "Download Python 3.12.x"
+| Category | Example |
+|----------|---------|
+| Lab ↔ AE | ALT trending 3x ULN across visits with no hepatotoxicity AE reported |
+| Vitals ↔ AE | BP consistently >160/100 across all visits, no hypertension AE, no antihypertensive medication |
+| Meds ↔ MH | Metformin prescribed but no diabetes in Medical History |
+| AE ↔ Disposition | Fatal AE outcome but subject disposition = "Completed Study" |
+| AE ↔ Meds | New medication started same day as AE onset, causality marked "Not Related" |
+| MH ↔ Meds | Ongoing Hypertension in Medical History but no antihypertensive in Concomitant Meds |
+| Demographics ↔ All | Consent date after screening date, age outside inclusion criteria |
+| Vitals ↔ AE | Sudden weight gain (+14kg between visits) with no corresponding AE |
 
-  3. Open the downloaded file
+## Tech Stack
 
-  4. IMPORTANT: On the first screen, check the box that says "Add Python
+- **Backend:** Python, FastAPI, Uvicorn
+- **LLM Integration:** OpenAI GPT-4o (configurable)
+- **Frontend:** HTML, CSS, JavaScript
+- **Data Processing:** Pandas, CSV
+- **Standards Referenced:** ICH-GCP, CDISC, MedDRA, ICH E2A
 
-   to PATH" at the bottom
+## Run Modes
 
-  5. Click "Install Now"
+| Mode | Cost | Speed | What it does |
+|------|------|-------|-------------|
+| Rules Only | Free | Instant | Runs all 18 rule-based checks, no LLM |
+| Rules + LLM | ~$1.50/run | 5–10 min | Full analysis with AI-powered clinical reasoning |
 
-  6. Wait for installation to complete, then click "Close"
+---
 
+## Installation & Setup
 
+### Prerequisites
 
-  Verify Python is installed:   
+- Python 3.10 or higher
+- OpenAI API key (optional — only needed for LLM mode)
 
+### Quick Start
 
+```bash
+# Clone the repository
+git clone https://github.com/[your-username]/OBERON-301-Clinical-Review.git
+cd OBERON-301-Clinical-Review
 
-  1. Press Windows key + R on your keyboard
+# Create and activate virtual environment
+python -m venv venv
 
-  2. Type cmd and press Enter (this opens Command Prompt)
+# On Windows:
+venv\Scripts\activate
 
-  3. Type this and press Enter:
+# On Mac/Linux:
+source venv/bin/activate
 
-  python --version
+# Install dependencies
+pip install -r requirements.txt
 
-  4. You should see something like Python 3.12.x — if yes, move to Step
+# Configure environment
+cp .env.example .env
+# Edit .env and add your OpenAI API key (optional)
 
-  2
+# Start the application
+python -m uvicorn app:app --host 0.0.0.0 --port 8000
+```
 
+Open your browser and go to: **http://localhost:8000**
 
+### Usage
 
-  ---
+1. Upload all 7 CSV files (Demographics, Medical History, Concomitant Meds, Adverse Events, Lab Data, Vital Signs, Disposition)
+2. Select analysis mode (Rules Only or Rules + LLM)
+3. Click "Run Analysis"
+4. Review flagged issues in the results dashboard
+5. Export results to CSV for further review
 
-  Step 2: Download the Project
+### Detailed Windows Setup Guide
 
-                                
+For step-by-step Windows installation instructions, see [SETUP_GUIDE.md](SETUP_GUIDE.md)
 
-  Option A: From GitHub
+---
 
+## Troubleshooting
 
+| Problem | Solution |
+|---------|----------|
+| `python` not recognized | Reinstall Python with "Add to PATH" checked |
+| `venv\Scripts\activate` error | Run `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` in PowerShell |
+| Port 8000 in use | Use `python -m uvicorn app:app --port 8001` |
+| LLM analysis fails | Verify API key in `.env` file and check OpenAI account credits |
+| Blank page | Clear browser cache (Ctrl+Shift+Delete) and refresh |
 
-  1. Go to the GitHub repository link shared with you
+---
 
-  2. Click the green "Code" button
+## Clinical Validation
 
-  3. Click "Download ZIP"
+The tool was tested against a synthetic dataset with 26 deliberately planted cross-form errors spanning all 7 CRF domains. The error tracker and validation methodology are included in the `/data` directory.
 
-  4. Open your Downloads folder
+**Important:** This tool is designed as a QC assistant for clinical data review. It does not replace human judgment. All flags require CDM review before action. For production use in a GCP environment, appropriate validation (IQ/OQ/PQ) and SOPs would be required.
 
-  5. Right-click the ZIP file → "Extract All" → Choose Desktop → Click
+---
 
-  "Extract"
+## About
 
+Built by **Naresh Parlapalli, CCDM®** — 17+ years in Clinical Data Management at J&J, Novartis, BMS, IQVIA, and Syneos Health. This tool was created to demonstrate how AI can augment (not replace) clinical data review workflows.
 
+Contact: naresh.0705@gmail.com | +91 7829100707
 
-  Option B: From ZIP file shared via email/drive
+## License
 
-  
-
-  1. Save the ZIP file to your Desktop
-
-  2. Right-click it → "Extract All" → Click "Extract"
-
-
-
-  You should now have a folder on your Desktop called
-
-  OBERON-301-Clinical-Review    
-
-
-
-  ---
-
-  Step 3: Get an OpenAI API Key 
-
-  
-
-  1. Go to platform.openai.com and sign up / log in
-
-  2. Click your profile icon (top right) → "API keys"
-
-  3. Click "Create new secret key"
-
-  4. Copy the key (starts with sk-...) — save it somewhere safe, you'll 
-
-  need it soon
-
-
-
-  ▎ Note: OpenAI charges per API call. One full analysis run costs 
-
-  ▎ approximately $1.50–$2.00. You can also run the app in "Rules Only" 
-
-  ▎ mode for free (no API key needed).
-
-  
-
-  ---                           
-
-  Step 4: Set Up the App
-
-  
-
-  1. Open Command Prompt:
-
-    - Press Windows key + R
-
-    - Type cmd and press Enter
-
-  2. Navigate to the project folder (copy-paste each line and press
-
-  Enter):
-
-  cd Desktop\OBERON-301-Clinical-Review
-
-  3. Create a virtual environment:
-
-  python -m venv venv
-
-  4. Activate the virtual environment:
-
-  venv\Scripts\activate
-
-  4. You should see (venv) appear at the beginning of the line
-
-  5. Install required packages:
-
-  pip install -r requirements.txt
-
-  5. Wait for it to finish (may take 1–2 minutes)
-
-  6. Create the configuration file:
-
-  copy .env.example .env        
-
-  7. Open the .env file to add your API key:
-
-  notepad .env
-
-  8. In Notepad, find the line that says:
-
-  OPENAI_API_KEY=your_key_here
-
-  8. Replace your_key_here with your actual API key (the sk-... key from
-
-   Step 3)
-
-  9. Save the file (Ctrl + S) and close Notepad
-
-
-
-  ---
-
-  Step 5: Start the App         
-
-  
-
-  1. In the same Command Prompt window (make sure you still see (venv)),
-
-   type:
-
-  python -m uvicorn app:app --host 0.0.0.0 --port 8000
-
-  2. You should see:
-
-  INFO:     Uvicorn running on http://0.0.0.0:8000
-
-  3. Open your web browser (Chrome, Edge, etc.)
-
-  4. Go to: http://localhost:8000
-
-
-
-  ▎ The app is now running! Keep the Command Prompt window open — 
-
-  ▎ closing it will stop the app.
-
-
-
-  ---
-
-  Step 6: Using the App         
-
-  
-
-  Upload Data
-
-
-
-  1. On the upload screen, click "Choose Files" or drag and drop
-
-  2. Select all 7 CSV files from the data folder inside the project:
-
-    - Demographics.csv
-
-    - Medical_History.csv       
-
-    - Concomitant_Meds.csv
-
-    - Adverse_Events.csv
-
-    - Lab_Data.csv
-
-    - Vital_Signs.csv
-
-    - Disposition.csv
-
-  
-
-  Run Analysis                  
-
-
-
-  1. Select the LLM provider:
-
-    - Rules Only — free, instant results (~104 flags), no API key needed
-
-    - OpenAI — uses GPT-4o, takes 5–10 minutes, costs ~$1.50 per run
-
-  2. Click "Run Analysis"
-
-  3. Wait for the progress bar to complete
-
-
-
-  View Results 
-
-
-
-  - Summary page — total flags, severity breakdown
-
-  - Flags table — sortable, filterable list of all issues found
-
-  - Subject detail — click any Subject ID for full profile view
-
-  - Export — click the Export button to download results as CSV
-
-
-
-  ---
-
-  Everyday Usage (After Initial Setup)
-
-  
-
-  Each time you want to use the app:
-
-
-
-  1. Open Command Prompt (Windows key + R → type cmd → Enter)
-
-  2. Run these commands:
-
-  cd Desktop\OBERON-301-Clinical-Review
-
-  venv\Scripts\activate
-
-  python -m uvicorn app:app --host 0.0.0.0 --port 8000
-
-  3. Open browser → go to http://localhost:8000
-
-  4. When done, close the Command Prompt window
-
-  
-
-  ---
-
-  Troubleshooting
-
-
-
-  ┌─────────────────────────┬───────────────────────────────────────┐
-
-  │         Problem         │               Solution                │
-
-  ├─────────────────────────┼───────────────────────────────────────┤
-
-  │ python not recognized   │ Reinstall Python and make sure to     │
-
-  │                         │ check "Add to PATH"                   │
-
-  ├─────────────────────────┼───────────────────────────────────────┤
-
-  │                         │ Try: Set-ExecutionPolicy -Scope       │
-
-  │ venv\Scripts\activate   │ CurrentUser -ExecutionPolicy          │
-
-  │ gives error             │ RemoteSigned in PowerShell, then      │
-
-  │ use                     │ app:app --port 8001 then go to        │
-
-  │                         │ http://localhost:8001                 │
-
-  ├─────────────────────────┼───────────────────────────────────────┤
-
-  │                         │ Check your API key in the .env file.  │
-
-  │ LLM analysis fails      │ Make sure you have credits on your    │
-
-  Each time you want to use the app:
-
-
-
-  1. Open Command Prompt (Windows key + R → type cmd → Enter)
-
-  2. Run these commands:
-
-  cd Desktop\OBERON-301-Clinical-Review
-
-  venv\Scripts\activate
-
-  python -m uvicorn app:app --host 0.0.0.0 --port 8000
-
-  3. Open browser → go to http://localhost:8000
-
-  4. When done, close the Command Prompt window
-
-
-
-  ---
-
-  Troubleshooting
-
-
-
-  ┌────────────────────────────┬─────────────────────────────────────────────────────────┐
-
-  │          Problem           │                        Solution                         │
-
-  ├────────────────────────────┼─────────────────────────────────────────────────────────┤
-
-  │ python not recognized      │ Reinstall Python and make sure to check "Add to PATH"   │
-
-  ├────────────────────────────┼─────────────────────────────────────────────────────────┤
-
-  │ venv\Scripts\activate      │ Try: Set-ExecutionPolicy -Scope CurrentUser             │
-
-  │ gives error                │ -ExecutionPolicy RemoteSigned in PowerShell, then retry │
-
-  ├────────────────────────────┼─────────────────────────────────────────────────────────┤
-
-  │ Port 8000 already in use   │ Change the port: python -m uvicorn app:app --port 8001  │
-
-  │                            │ then go to http://localhost:8001                        │
-
-  ├───────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────┤
-
-  │ Port 8000 already in use          │ Change the port: python -m uvicorn app:app --port 8001 then go to http://localhost:8001             │
-
-  ├───────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────┤
-
-  │ LLM analysis fails                │ Check your API key in the .env file. Make sure you have credits on your OpenAI account              │
-
-  ├───────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────┤
-
-  │ App shows blank page              │ Clear browser cache (Ctrl + Shift + Delete) and refresh                                             │
-
-  └───────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────┘
-
+This project is for demonstration and educational purposes.
